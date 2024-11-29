@@ -39,10 +39,34 @@ param_grid = {
 import pandas as pd
 import numpy as np
 from sklearn import metrics
+import seaborn as sns
 from xgboost import XGBClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.impute import KNNImputer
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import classification_report, confusion_matrix, r2_score
+from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
+
+
+
+import pandas as pd
+
+# Sample data
+data = {'column': [10, 12, 14, 100, 12, 13, 15, 8, 200]}
+df = pd.DataFrame(data)
+
+# Calculate Q1 (25th percentile) and Q3 (75th percentile)
+Q1 = df['column'].quantile(0.25)
+Q3 = df['column'].quantile(0.75)
+IQR = Q3 - Q1
+
+# Define outlier bounds
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+# Remove outliers
+df_no_outliers = df[(df['column'] >= lower_bound) & (df['column'] <= upper_bound)]
+print(df_no_outliers)
